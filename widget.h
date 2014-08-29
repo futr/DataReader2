@@ -4,6 +4,15 @@
 #include <QWidget>
 #include <QFileDialog>
 #include <QFile>
+#include <QMessageBox>
+#include <QByteArray>
+#include <QThread>
+#include <time.h>
+#include "progressdialog.h"
+#include "writefileworker.h"
+#include "abstractdatafilter.h"
+#include "gpsdatafilter.h"
+#include "device_id.h"
 
 namespace Ui {
 class Widget;
@@ -28,6 +37,9 @@ private:
     Ui::Widget *ui;
 
     QString logFileName;
+    QFile logFile;
+
+    void disableUI();
 };
 
 #endif // WIDGET_H
