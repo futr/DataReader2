@@ -12,6 +12,11 @@
 #include "writefileworker.h"
 #include "abstractdatafilter.h"
 #include "gpsdatafilter.h"
+#include "accdatafilter.h"
+#include "gyrodatafilter.h"
+#include "magdatafilter.h"
+#include "tempdatafilter.h"
+#include "pressdatafilter.h"
 #include "device_id.h"
 
 namespace Ui {

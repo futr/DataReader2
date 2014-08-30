@@ -117,22 +117,47 @@ void Widget::on_saveButton_clicked()
 
     // 保存開始
 
+    // 先頭へ
+    logFile.seek( 2 );
+
     // 保存用クラス実体化
     ProgressDialog *progress = new ProgressDialog();
     QThread *writeFileThread = new QThread();
     WriteFileWorker *worker  = new WriteFileWorker();
 
-    // フィルター実体化
-    QMap<int, AbstractDataFilter *> filterMap;
+    // フィルター登録
+    QMap<int, QList<AbstractDataFilter *> > filterMap;
 
-    if ( ui->gpsCheckBox->isChecked() ) {
-        filterMap[ID_GPS] = new GPSDataFilter();
+    if ( ui->gpsCheckBox->isEnabled() && ui->gpsCheckBox->isChecked() ) {
+        filterMap[ID_GPS] = QList<AbstractDataFilter *>() << new GPSDataFilter();
+    }
+
+    if ( ui->accCheckBox->isEnabled() && ui->accCheckBox->isChecked() ) {
+        filterMap[ID_MPU9150_ACC] = QList<AbstractDataFilter *>() << new AccDataFilter();
+    }
+
+    if ( ui->gyroCheckBox->isEnabled() && ui->gyroCheckBox->isChecked() ) {
+        filterMap[ID_MPU9150_GYRO] = QList<AbstractDataFilter *>() << new GyroDataFilter();
+    }
+
+    if ( ui->magCheckBox->isEnabled() && ui->magCheckBox->isChecked() ) {
+        filterMap[ID_AK8975] = QList<AbstractDataFilter *>() << new MagDataFilter();
+    }
+
+    if ( ui->tempCheckBox->isEnabled() && ui->tempCheckBox->isChecked() ) {
+        filterMap[ID_MPU9150_TEMP] = QList<AbstractDataFilter *>() << new TempDataFilter();
+    }
+
+    if ( ui->pressCheckBox->isEnabled() && ui->pressCheckBox->isChecked() ) {
+        filterMap[ID_LPS331AP] = QList<AbstractDataFilter *>() << new PressDataFilter();
     }
 
     // (実験)後始末関数をラムダで作ってみる
     auto deleteAll = [&] {
-        foreach ( AbstractDataFilter *filter , filterMap ) {
-            delete filter;
+        foreach ( QList<AbstractDataFilter *> filterList, filterMap ) {
+            foreach ( AbstractDataFilter *filter,  filterList ) {
+                delete filter;
+            }
         }
 
         delete progress;
@@ -143,9 +168,11 @@ void Widget::on_saveButton_clicked()
     // フィルター設定
     bool opened = true;
 
-    foreach ( AbstractDataFilter *filter , filterMap ) {
-        if ( !filter->openFile( saveDir ) ) {
-            opened = false;
+    foreach ( QList<AbstractDataFilter *> filterList, filterMap ) {
+        foreach ( AbstractDataFilter *filter,  filterList ) {
+            if ( !filter->openFile( saveDir ) ) {
+                opened = false;
+            }
         }
     }
 
@@ -158,9 +185,14 @@ void Widget::on_saveButton_clicked()
         return;
     }
 
+    // Open dialog
+    progress->setModal( true );
+    progress->show();
+
     // ワーカー設定
     worker->moveToThread( writeFileThread );
     worker->setParameter( &logFile, filterMap );
+    worker->setup();
 
     // シグナル接続
     connect( worker,          SIGNAL(finished()),    progress, SLOT(accept()) );
@@ -172,9 +204,6 @@ void Widget::on_saveButton_clicked()
 
     beforeTime     = time( NULL );
     beforeProgress = 0;
-
-    // Open dialog
-    progress->show();
 
     // Event loop
     while ( 1 ) {

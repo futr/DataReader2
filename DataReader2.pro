@@ -17,17 +17,27 @@ SOURCES += main.cpp\
     abstractdatafilter.cpp \
     gpsdatafilter.cpp \
     progressdialog.cpp \
-    writefileworker.cpp
+    writefileworker.cpp \
+    accdatafilter.cpp \
+    gyrodatafilter.cpp \
+    magdatafilter.cpp \
+    pressdatafilter.cpp \
+    tempdatafilter.cpp
 
 HEADERS  += widget.h \
     abstractdatafilter.h \
     gpsdatafilter.h \
     device_id.h \
     progressdialog.h \
-    writefileworker.h
+    writefileworker.h \
+    accdatafilter.h \
+    gyrodatafilter.h \
+    magdatafilter.h \
+    pressdatafilter.h \
+    tempdatafilter.h
 
 FORMS    += widget.ui \
     progressdialog.ui
 
-# autoやラムダを使っているので有効にしています.マイクロソフトのコンパイラーでは違うオプションが必要だと思います．
+# auto�?���?�?を使って�?��ので有効にして�?���?.マイクロソフトのコンパイラーでは違うオプションが�?��だと思います�?
 QMAKE_CXXFLAGS += -std=c++11

@@ -2,7 +2,6 @@
 #define GPSDATAFILTER_H
 
 #include "abstractdatafilter.h"
-#include "device_id.h"
 
 class GPSDataFilter : public AbstractDataFilter
 {

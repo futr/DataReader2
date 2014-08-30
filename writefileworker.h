@@ -20,7 +20,7 @@ public:
 
 private:
     QFile *m_logFile;
-    QMap<int, AbstractDataFilter *> m_filterMap;
+    QMap<int, QList<AbstractDataFilter *> > m_filterMap;
     bool stopFlag;
     bool m_error;
     qint64 m_progress;
@@ -37,7 +37,8 @@ signals:
     void finished( void );
 
 public slots:
-    void setParameter( QFile *logFile, QMap<int, AbstractDataFilter *> filterMap );
+    void setParameter( QFile *logFile, QMap<int, QList<AbstractDataFilter *> > filterMap );
+    void setup();
     void doSaveFile( void );
     void stopSave( void );
 

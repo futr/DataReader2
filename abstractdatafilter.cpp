@@ -27,12 +27,28 @@ void AbstractDataFilter::setFileName(QString name)
     m_fileName = name;
 }
 
+void AbstractDataFilter::makeHeader()
+{
+    // ヘッダを作る
+}
+
 bool AbstractDataFilter::openFile(QString path)
 {
     // ファイルを開く
+    bool opened;
+
     m_file.setFileName( path + "/" + m_fileName );
 
-    return m_file.open( QFile::WriteOnly );
+    opened = m_file.open( QFile::WriteOnly );
+
+    if ( !opened ) {
+        return false;
+    }
+
+    // ヘッダ作成
+    makeHeader();
+
+    return true;
 }
 
 void AbstractDataFilter::closeFile()

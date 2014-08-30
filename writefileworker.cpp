@@ -12,6 +12,12 @@ bool WriteFileWorker::error()
     return m_error;
 }
 
+void WriteFileWorker::setup()
+{
+    // 初期化など
+    m_running = true;
+}
+
 qint64 WriteFileWorker::getProgress()
 {
     return m_progress;
@@ -23,7 +29,7 @@ bool WriteFileWorker::isRunning()
     return m_running;
 }
 
-void WriteFileWorker::setParameter( QFile *logFile, QMap<int, AbstractDataFilter *> filterMap )
+void WriteFileWorker::setParameter(QFile *logFile, QMap<int, QList<AbstractDataFilter *> > filterMap )
 {
     // Set the parameter
     m_logFile = logFile;
@@ -51,6 +57,11 @@ void WriteFileWorker::doSaveFile( void )
         int devID;
         int dataSize;
         quint32 step;
+
+        // 停止フラグ確認
+        if ( stopFlag ) {
+            break;
+        }
 
         // シグネチャ読み込み
         signatureBuf = m_logFile->read( 1 );
@@ -114,8 +125,9 @@ void WriteFileWorker::doSaveFile( void )
                 data += buf;
             };
 
+            // GPSのデーターが指定サイズよりも多かったためサイズ修正
             if ( dataSize != data.size() ) {
-                qWarning( "GPSデーターオーバーフロー : %d", data.size() );
+                // qWarning( "GPSデーターオーバーフロー : %d", data.size() );
 
                 dataSize = data.size();
             }
@@ -131,19 +143,21 @@ void WriteFileWorker::doSaveFile( void )
         }
 
         // フィルター適用
-        AbstractDataFilter *filter;
+        QList<AbstractDataFilter *> filterList;
 
-        filter = m_filterMap[devID];
+        filterList = m_filterMap[devID];
 
         // 対応するフィルターがなかった
-        if ( 0 == filter ) {
+        if ( 0 == filterList.count() ) {
             // qWarning( "There was no match filter : %d", devID );
 
             continue;
         }
 
         // フィルター処理
-        filter->parseAndSave( step, data );
+        foreach ( AbstractDataFilter *filter,  filterList ) {
+            filter->parseAndSave( step, data );
+        }
 
         // 進捗設定
         m_progress = m_logFile->pos() / 1024;

@@ -5,6 +5,7 @@
 #include <QString>
 #include <QFile>
 #include <QByteArray>
+#include "device_id.h"
 
 class AbstractDataFilter : public QObject
 {
@@ -20,6 +21,9 @@ public:
     void closeFile();
     QString getFilterName();
     int getFilterID();
+
+private:
+    virtual void makeHeader();
 
 protected:
     QString m_fileName;     // コンストラクターで設定する必要がある
