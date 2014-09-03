@@ -9,6 +9,7 @@
 #include <time.h>
 #include <QMap>
 #include <QtEndian>
+#include <QElapsedTimer>
 
 #define LOG_SIGNATURE 0x3E
 
@@ -35,6 +36,7 @@ public:
 signals:
     void errorOccurred( void );
     void finished( void );
+    void progress( int pos, int max, int bytesPerSec, QString name );
 
 public slots:
     void setParameter( QFile *logFile, QMap<int, QList<AbstractDataFilter *> > filterMap );

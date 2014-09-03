@@ -23,7 +23,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>保存中</string>
+      <string>Saving</string>
      </property>
     </widget>
    </item>
@@ -74,7 +74,7 @@
      <item>
       <widget class="QPushButton" name="cancelButton">
        <property name="text">
-        <string>キャンセル</string>
+        <string>&amp;Cancel</string>
        </property>
       </widget>
      </item>

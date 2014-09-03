@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>254</width>
-    <height>215</height>
+    <width>268</width>
+    <height>259</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,27 +17,27 @@
    <item>
     <widget class="QPushButton" name="openButton">
      <property name="text">
-      <string>ログを開く</string>
+      <string>&amp;Open a log</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>ファイル名</string>
+      <string>File name</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>保存データー選択</string>
+      <string>Data types to save</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="QCheckBox" name="pressCheckBox">
         <property name="text">
-         <string>気圧</string>
+         <string>Pressure</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -47,7 +47,7 @@
       <item row="0" column="1">
        <widget class="QCheckBox" name="tempCheckBox">
         <property name="text">
-         <string>温度</string>
+         <string>Temperature</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -57,7 +57,7 @@
       <item row="1" column="0">
        <widget class="QCheckBox" name="accCheckBox">
         <property name="text">
-         <string>加速度</string>
+         <string>Acceleration</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -67,7 +67,7 @@
       <item row="1" column="1">
        <widget class="QCheckBox" name="gyroCheckBox">
         <property name="text">
-         <string>角速度</string>
+         <string>Gyroscope</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -87,7 +87,7 @@
       <item row="2" column="1">
        <widget class="QCheckBox" name="magCheckBox">
         <property name="text">
-         <string>地磁気</string>
+         <string>Magnetism</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -100,20 +100,31 @@
    <item>
     <widget class="QPushButton" name="saveButton">
      <property name="text">
-      <string>保存</string>
+      <string>&amp;Save</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QPushButton" name="closeButton">
      <property name="text">
-      <string>終了</string>
+      <string>&amp;Quit</string>
      </property>
     </widget>
    </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>openButton</tabstop>
+  <tabstop>pressCheckBox</tabstop>
+  <tabstop>tempCheckBox</tabstop>
+  <tabstop>accCheckBox</tabstop>
+  <tabstop>gyroCheckBox</tabstop>
+  <tabstop>gpsCheckBox</tabstop>
+  <tabstop>magCheckBox</tabstop>
+  <tabstop>saveButton</tabstop>
+  <tabstop>closeButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

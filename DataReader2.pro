@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = DataReader2
 TEMPLATE = app
 
+TRANSLATIONS = dr2_ja.ts
 
 SOURCES += main.cpp\
         widget.cpp \
@@ -39,5 +40,12 @@ HEADERS  += widget.h \
 FORMS    += widget.ui \
     progressdialog.ui
 
-# auto�?���?�?を使って�?��ので有効にして�?���?.マイクロソフトのコンパイラーでは違うオプションが�?��だと思います�?
+# Use c++11 for lambda and auto
 QMAKE_CXXFLAGS += -std=c++11
+
+win32 {
+    RC_FILE = win.rc
+}
+
+OTHER_FILES += \
+    win.rc

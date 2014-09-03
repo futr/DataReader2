@@ -8,7 +8,7 @@ GPSDataFilter::GPSDataFilter(QObject *parent) :
     m_filterID   = ID_GPS;
 }
 
-bool GPSDataFilter::parseAndSave(unsigned int step, QByteArray data)
+bool GPSDataFilter::parseAndSave(unsigned int, QByteArray data)
 {
     // データーを処理して保存
 

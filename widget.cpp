@@ -29,7 +29,7 @@ void Widget::on_openButton_clicked()
     disableUI();
 
     // ファイル名取得
-    logFileName = QFileDialog::getOpenFileName( this, "ログファイルを選択してください" );
+    logFileName = QFileDialog::getOpenFileName( this, tr( "Select a log file" ) );
 
     // Check the log file name
     if ( logFileName == "" ) {
@@ -42,7 +42,7 @@ void Widget::on_openButton_clicked()
     logFile.setFileName( logFileName );
 
     if ( !logFile.open( QFile::ReadOnly ) ) {
-        QMessageBox::critical( this, "失敗", "ログファイルのオープンに失敗しました" );
+        QMessageBox::critical( this, tr( "Error" ), tr( "Can't open a log file" ) );
 
         return;
     }
@@ -54,7 +54,7 @@ void Widget::on_openButton_clicked()
 
     if ( (unsigned char)header[0] != DEVICE_LOG_SIGNATURE ) {
         // シグネチャが一致しないので失敗
-        QMessageBox::critical( this, "失敗", QString( "正常なログファイルではありません\n%1" ).arg( (int)header[0] ) );
+        QMessageBox::critical( this, tr( "Error" ), QString( tr( "Invalid log file\n%1" ) ).arg( (int)header[0] ) );
 
         logFile.close();
 
@@ -95,20 +95,17 @@ void Widget::on_saveButton_clicked()
 {
     // Select the dir to save and save the log
     QString saveDir;
-    time_t beforeTime;
-    qint64 currentProgress;
-    qint64 beforeProgress;
     QMessageBox warningBox;
 
     // Create the warning box
-    warningBox.setWindowTitle( "失敗" );
-    warningBox.setText( "ファイルの書き出しに失敗しました." );
-    warningBox.setInformativeText( "書き出し中に何らかの問題が発生しました．\n正常にファイルが保存できていない可能性があります．" );
+    warningBox.setWindowTitle( tr( "Warning" ) );
+    warningBox.setText( tr( "File write failed" ) );
+    warningBox.setInformativeText( tr( "A problem has occurred on current operation." ) );
     warningBox.setIcon( QMessageBox::Warning );
     warningBox.setStandardButtons( QMessageBox::Ok );
 
     // Get dir to save
-    saveDir = QFileDialog::getExistingDirectory( this, "保存先を選択してください" );
+    saveDir = QFileDialog::getExistingDirectory( this, tr( "Select a dir to save" ) );
 
     // Check
     if ( saveDir == "" ) {
@@ -178,16 +175,12 @@ void Widget::on_saveButton_clicked()
 
     // オープンエラーチェック
     if ( !opened ) {
-        QMessageBox::critical( this, "失敗", "ファイルが開けませんでした" );
+        QMessageBox::critical( this, ( "Error" ), tr( "Can't open a file to save" ) );
 
         deleteAll();
 
         return;
     }
-
-    // Open dialog
-    progress->setModal( true );
-    progress->show();
 
     // ワーカー設定
     worker->moveToThread( writeFileThread );
@@ -198,32 +191,14 @@ void Widget::on_saveButton_clicked()
     connect( worker,          SIGNAL(finished()),    progress, SLOT(accept()) );
     connect( progress,        SIGNAL(finished(int)), worker,   SLOT(stopSave()), Qt::DirectConnection );
     connect( writeFileThread, SIGNAL(started()),     worker,   SLOT(doSaveFile()) );
+    connect( worker, SIGNAL(progress(int,int,int,QString)), progress, SLOT(setProgressPos(int,int,int,QString)), Qt::QueuedConnection );
 
     // 開始
     writeFileThread->start();
 
-    beforeTime     = time( NULL );
-    beforeProgress = 0;
-
-    // Event loop
-    while ( 1 ) {
-        if ( !worker->isRunning() ) {
-            break;
-        }
-
-        // Update progress
-        if ( beforeTime != time( NULL ) ) {
-            beforeTime = time( NULL );
-
-            currentProgress = worker->getProgress();
-
-            progress->setProgressPos( currentProgress, logFile.size() / 1024, ( currentProgress - beforeProgress ) * 1024, saveDir );
-
-            beforeProgress = currentProgress;
-        }
-
-        QApplication::processEvents();
-    }
+    // プログレスダイアログ表示
+    progress->setWindowFlags( Qt::MSWindowsFixedSizeDialogHint | Qt::Dialog );
+    progress->exec();
 
     // Wait Save Thread
     writeFileThread->quit();
@@ -249,5 +224,5 @@ void Widget::disableUI()
     ui->tempCheckBox->setEnabled( false );
     ui->pressCheckBox->setEnabled( false );
 
-    ui->label->setText( "ファイル名" );
+    ui->label->setText( tr( "File name" ) );
 }

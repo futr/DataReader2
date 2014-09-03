@@ -39,11 +39,17 @@ void WriteFileWorker::setParameter(QFile *logFile, QMap<int, QList<AbstractDataF
 void WriteFileWorker::doSaveFile( void )
 {
     // Save readFile to writeFile
+    QElapsedTimer elapsed;
+    qint64 beforePos;
+
     // init
     m_progress = 0;
     stopFlag   = false;
     m_error    = false;
     m_running  = true;
+    beforePos  = 0;
+
+    elapsed.start();
 
     // Init fp
     m_logFile->seek( 2 );
@@ -161,6 +167,15 @@ void WriteFileWorker::doSaveFile( void )
 
         // 進捗設定
         m_progress = m_logFile->pos() / 1024;
+
+        // 進捗シグナル
+        if ( elapsed.hasExpired( 100 ) ) {
+            emit progress( m_progress, m_logFile->size() / 1024, ( m_progress - beforePos ) * 1024 * 10, m_logFile->fileName() );
+
+            beforePos = m_progress;
+
+            elapsed.start();
+        }
     }
 
     // emit error
