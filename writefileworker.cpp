@@ -84,10 +84,10 @@ void WriteFileWorker::doSaveFile( void )
         signature = (unsigned char)signatureBuf[0];
 
         // シグネチャチェック
-        if ( signature == 0 ) {
-            // シグネチャ == 0なので終了
+        if ( signature == 0 || signature == LOG_END_SIGNATURE ) {
+            // シグネチャ == 0,LOG_END_SIGNATUREなので終了
             break;
-        } else if ( signature != LOG_SIGNATURE ) {
+        } else if ( signature != LOG_SIGNATURE && signature != LOG_SIGNATURE_OLD ) {
             qWarning( "シグネチャが一致しない : sig(%d) id(%d) size(%d) pos(%d)", signature, devID, dataSize, (int)m_logFile->pos() );
 
             m_error = true;
@@ -122,7 +122,8 @@ void WriteFileWorker::doSaveFile( void )
                 }
 
                 // ファイル終端かシグネチャ発見
-                if ( (unsigned char)buf[0] == LOG_SIGNATURE || (unsigned char)buf[0] == 0 ) {
+                if ( (unsigned char)buf[0] == LOG_SIGNATURE || (unsigned char)buf[0] == 0 ||
+                     (unsigned char)buf[0] == LOG_SIGNATURE_OLD || (unsigned char)buf[0] == LOG_END_SIGNATURE ) {
                     m_logFile->seek( m_logFile->pos() - 1 );
 
                     break;
