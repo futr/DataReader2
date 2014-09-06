@@ -11,8 +11,6 @@
 #include <QtEndian>
 #include <QElapsedTimer>
 
-#define LOG_SIGNATURE 0x3E
-
 class WriteFileWorker : public QObject
 {
     Q_OBJECT
