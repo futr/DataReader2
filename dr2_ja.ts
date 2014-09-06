@@ -4,11 +4,11 @@
 <context>
     <name>ProgressDialog</name>
     <message>
-        <location filename="progressdialog.ui" line="14"/>
         <source>保存中</source>
-        <translation>保存中</translation>
+        <translation type="vanished">保存中</translation>
     </message>
     <message>
+        <location filename="progressdialog.ui" line="14"/>
         <location filename="progressdialog.ui" line="26"/>
         <source>Saving</source>
         <translation>保存中</translation>
@@ -22,9 +22,13 @@
 <context>
     <name>Widget</name>
     <message>
-        <location filename="widget.ui" line="14"/>
         <source>ログ解析</source>
-        <translation>ログ解析</translation>
+        <translation type="vanished">ログ解析</translation>
+    </message>
+    <message>
+        <location filename="widget.ui" line="14"/>
+        <source>DataReader2</source>
+        <translation>DataReader2</translation>
     </message>
     <message>
         <location filename="widget.ui" line="20"/>
@@ -118,7 +122,7 @@
     <message>
         <location filename="widget.cpp" line="103"/>
         <source>A problem has occurred on current operation.</source>
-        <translation>書き込み中に何らかの問題が発生した可能性があります．</translation>
+        <translation>書き込み中に何らかの問題が発生した可能性があります.</translation>
     </message>
     <message>
         <location filename="widget.cpp" line="108"/>
@@ -127,7 +131,8 @@
     </message>
     <message>
         <location filename="widget.cpp" line="178"/>
-        <source>Can&apos;t open a file</source>
+        <source>Can&apos;t open a file to save</source>
+        <oldsource>Can&apos;t open a file</oldsource>
         <translation>ファイルが開けません</translation>
     </message>
 </context>
