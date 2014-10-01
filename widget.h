@@ -8,6 +8,7 @@
 #include <QByteArray>
 #include <QThread>
 #include <time.h>
+#include <QFileInfo>
 #include "progressdialog.h"
 #include "writefileworker.h"
 #include "abstractdatafilter.h"
