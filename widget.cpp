@@ -162,20 +162,17 @@ void Widget::on_saveButton_clicked()
         delete writeFileThread;
     };
 
-    // 保存ディレクトリを作成
-    QDir dir( saveDir );
-
-    // 存在しなければ作成
-    if ( !dir.exists( QFileInfo( logFile.fileName() ).baseName() ) ) {
-        dir.mkdir( QFileInfo( logFile.fileName() ).baseName() );
-    }
-
     // フィルター設定
     bool opened = true;
 
+    // 各フィルターオープン
     foreach ( QList<AbstractDataFilter *> filterList, filterMap ) {
-        foreach ( AbstractDataFilter *filter,  filterList ) {
-            if ( !filter->openFile( saveDir + "/" + QFileInfo( logFile.fileName() ).baseName() ) ) {
+        foreach ( AbstractDataFilter *filter, filterList ) {
+            // ファイル名指定 012345_defaultName.csv
+            filter->setFileName( QFileInfo( logFile.fileName() ).baseName() + "_" + filter->getFileName() );
+
+            // 開く
+            if ( !filter->openFile( saveDir ) ) {
                 opened = false;
             }
         }
