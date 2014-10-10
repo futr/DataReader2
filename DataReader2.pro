@@ -49,3 +49,6 @@ win32 {
 
 OTHER_FILES += \
     win.rc
+
+RESOURCES += \
+    resource.qrc
